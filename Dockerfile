@@ -51,8 +51,8 @@ COPY requirements.txt .
 # 安装Python依赖 (使用阿里云镜像并临时忽略代理变量)
 RUN http_proxy="" https_proxy="" HTTP_PROXY="" HTTPS_PROXY="" pip install --no-cache-dir -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 
-# 安装Playwright浏览器 (使用淘宝/npmmirror镜像)
-RUN PLAYWRIGHT_DOWNLOAD_HOST=https://npmmirror.com/mirrors/playwright/ playwright install chromium
+# 安装Playwright浏览器 (尝试使用官方源直连，因 npmmirror 暂未同步最新版本)
+RUN http_proxy="" https_proxy="" HTTP_PROXY="" HTTPS_PROXY="" playwright install chromium
 RUN http_proxy="" https_proxy="" HTTP_PROXY="" HTTPS_PROXY="" playwright install-deps chromium
 
 # 复制MCP服务器文件
