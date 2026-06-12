@@ -48,12 +48,12 @@ RUN http_proxy="" https_proxy="" HTTP_PROXY="" HTTPS_PROXY="" apt-get update --f
 # 复制依赖文件
 COPY requirements.txt .
 
-# 安装Python依赖
-RUN pip install --no-cache-dir -r requirements.txt
+# 安装Python依赖 (使用阿里云镜像并临时忽略代理变量)
+RUN http_proxy="" https_proxy="" HTTP_PROXY="" HTTPS_PROXY="" pip install --no-cache-dir -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 
-# 安装Playwright浏览器
-RUN playwright install chromium
-RUN playwright install-deps chromium
+# 安装Playwright浏览器 (使用淘宝/npmmirror镜像)
+RUN PLAYWRIGHT_DOWNLOAD_HOST=https://npmmirror.com/mirrors/playwright/ playwright install chromium
+RUN http_proxy="" https_proxy="" HTTP_PROXY="" HTTPS_PROXY="" playwright install-deps chromium
 
 # 复制MCP服务器文件
 COPY lanhu_mcp_server.py .
